@@ -96,3 +96,53 @@ button:hover { filter: brightness(1.1); }
 .entry .actions { display: flex; gap: 8px; margin-top: 12px; }
 .entry .actions button { padding: 7px 14px; font-size: 13px; }
 .entry .actions button:last-child { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+
+/* Password generator */
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  margin-bottom: 10px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+textarea:focus { outline: none; border-color: var(--accent); }
+
+.pw-row { display: flex; gap: 8px; align-items: flex-start; }
+.pw-row input { margin-bottom: 10px; }
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 11px 16px;
+}
+
+.generator {
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.generator h3 { margin: 0 0 10px; font-size: 15px; color: var(--accent); }
+.generator > button { width: 100%; }
+
+.gen-result { margin-top: 12px; }
+.gen-summary { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.gen-result code {
+  display: block;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+}
+.gen-result .actions { display: flex; gap: 8px; margin-top: 10px; }
+.gen-result .actions button { flex: 1; }
