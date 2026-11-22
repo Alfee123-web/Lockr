@@ -1,148 +1,445 @@
+
+/* ==========================================
+   🎀 LOCKR — HELLO KITTY DESIGN SYSTEM
+   Global Styles & Design Tokens
+========================================== */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap');
+
+/* ==========================================
+   1. COLOR PALETTE
+========================================== */
+
 :root {
-  --bg: #0f1117;
-  --card: #1a1d27;
-  --border: #2b3040;
-  --text: #e8eaf0;
-  --muted: #8b92a8;
-  --accent: #6c8cff;
-  --danger: #ff6b6b;
+  /* Primary pink palette */
+  --pink-primary: #F62E70;
+  --pink-soft: #F98EAA;
+  --pink-blush: #F6BBC4;
+  --pink-light: #FACCD7;
+  --pink-pale: #FFF0F4;
+
+  /* Backgrounds */
+  --bg: #FBFDFB;
+  --bg-soft: #FFF5F7;
+  --bg-pink: #FCE7ED;
+  --card: #FFFFFF;
+  --card-hover: #FFF8FA;
+
+  /* Text */
+  --text: #24151D;
+  --text-secondary: #50303F;
+  --muted: #927783;
+  --text-light: #B49AA5;
+
+  /* Borders */
+  --border: #F4D5DE;
+  --border-strong: #EDB8C8;
+
+  /* Actions */
+  --accent: #F62E70;
+  --accent-hover: #DE1D5D;
+  --accent-soft: #FFE1EA;
+  --danger: #E34B65;
+  --success: #48A982;
+  --warning: #E9A34B;
+
+  /* Shadows */
+  --shadow-sm: 0 3px 12px rgba(246, 46, 112, 0.06);
+  --shadow-md: 0 8px 25px rgba(246, 46, 112, 0.10);
+  --shadow-lg: 0 15px 40px rgba(246, 46, 112, 0.14);
+  --shadow-glow: 0 0 20px rgba(246, 46, 112, 0.18);
+
+  /* Typography */
+  --font-heading: 'Nunito', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-full: 999px;
+
+  /* Spacing */
+  --page-padding: 28px;
+  --section-gap: 24px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-smooth: 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-* { box-sizing: border-box; }
+/* ==========================================
+   2. GLOBAL RESET
+========================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
 
 body {
-  margin: 0;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  display: block;
-}
-
-input, select {
-  width: 100%;
-  padding: 11px 14px;
-  margin-bottom: 10px;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  font-family: var(--font-body);
   font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--accent);
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ==========================================
+   3. TYPOGRAPHY
+========================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+h2 {
+  font-size: clamp(23px, 3vw, 30px);
+}
+
+h3 {
+  font-size: 20px;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+strong {
+  font-weight: 800;
+}
+
+/* ==========================================
+   4. SELECTION & SCROLLBAR
+========================================== */
+
+::selection {
+  background: var(--pink-light);
+  color: var(--text);
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pink-blush);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-soft);
+}
+
+/* ==========================================
+   5. GLOBAL FOCUS STYLES
+========================================== */
+
+:focus-visible {
+  outline: 3px solid rgba(246, 46, 112, 0.35);
+  outline-offset: 3px;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 button {
-  padding: 9px 16px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
-button:hover { filter: brightness(1.1); }
-
-.error { color: var(--danger); font-size: 14px; margin: 0 0 10px; }
-
-/* Login page */
-.auth-box {
-  max-width: 380px;
-  margin: 12vh auto 0;
-  padding: 32px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  text-align: center;
-}
-.auth-box h1 { margin: 0 0 6px; }
-.auth-box p { color: var(--muted); margin: 0 0 20px; }
-.auth-box button { width: 100%; padding: 12px; }
-.auth-box .toggle { margin-top: 16px; cursor: pointer; color: var(--accent); }
-
-/* Vault page */
-.vault { max-width: 680px; margin: 0 auto; padding: 24px 16px 60px; }
-.vault header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.vault header h1 { margin: 0; font-size: 26px; }
-.vault header button { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-
-.entry-form, .entry {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 14px;
-}
-.entry-form h3 { margin: 0 0 12px; }
-.entry-form button { width: 100%; }
-
-.entry strong { font-size: 17px; }
-.entry div { color: var(--muted); font-size: 14px; margin-top: 3px; }
-.entry .pw {
-  color: var(--text);
-  font-family: Consolas, monospace;
-  font-size: 15px;
-  margin-top: 8px;
-}
-.entry .actions { display: flex; gap: 8px; margin-top: 12px; }
-.entry .actions button { padding: 7px 14px; font-size: 13px; }
-.entry .actions button:last-child { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
-
-/* Password generator */
-textarea {
-  width: 100%;
-  padding: 11px 14px;
-  margin-bottom: 10px;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
-}
-textarea:focus { outline: none; border-color: var(--accent); }
-
-.pw-row { display: flex; gap: 8px; align-items: flex-start; }
-.pw-row input { margin-bottom: 10px; }
-
-button.ghost {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 11px 16px;
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.generator {
-  background: var(--bg);
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
-}
-.generator h3 { margin: 0 0 10px; font-size: 15px; color: var(--accent); }
-.generator > button { width: 100%; }
+/* ==========================================
+   6. DECORATIVE BOW SYSTEM 🎀
+========================================== */
 
-.gen-result { margin-top: 12px; }
-.gen-summary { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
-.gen-result code {
-  display: block;
-  padding: 10px 12px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  word-break: break-all;
+.bow-decoration {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
 }
-.gen-result .actions { display: flex; gap: 8px; margin-top: 10px; }
-.gen-result .actions button { flex: 1; }
+
+.bow-floating {
+  animation: bowFloat 4s ease-in-out infinite;
+}
+
+@keyframes bowFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(5deg);
+  }
+}
+
+/* Gentle bow bounce */
+
+@keyframes bowBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12) rotate(4deg);
+  }
+}
+
+/* ==========================================
+   7. SPARKLES & HEARTS ✨
+========================================== */
+
+.sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(20deg);
+  }
+}
+
+.heart-float {
+  animation: heartFloat 3s ease-in-out infinite;
+}
+
+@keyframes heartFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ==========================================
+   8. TREASURE BOX ANIMATION 🎁
+   Base animation classes.
+   Interactive React component comes later.
+========================================== */
+
+@keyframes treasureOpen {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  60% {
+    transform: rotateX(-65deg);
+  }
+
+  100% {
+    transform: rotateX(-85deg);
+  }
+}
+
+@keyframes treasureGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes treasureReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.7);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.treasure-reveal {
+  animation: treasureReveal 0.65s ease-out both;
+}
+
+/* ==========================================
+   9. GENERAL UI ANIMATIONS
+========================================== */
+
+/* Fade entrance */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide entrance */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pop entrance */
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  70% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Gentle pulse */
+
+@keyframes softPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(246, 46, 112, 0);
+  }
+
+  50% {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.5s ease both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease both;
+}
+
+.animate-pop {
+  animation: popIn 0.45s ease both;
+}
+
+.animate-pulse {
+  animation: softPulse 2s ease-in-out infinite;
+}
+
+/* ==========================================
+   10. GLOBAL TRANSITIONS
+========================================== */
+
+img,
+svg,
+button,
+a,
+input,
+textarea,
+select {
+  transition:
+    background-color var(--transition-normal),
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal),
+    color var(--transition-normal);
+}
+
+/* ==========================================
+   11. RESPONSIVE FOUNDATION
+========================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --page-padding: 18px;
+    --section-gap: 18px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --page-padding: 14px;
+  }
+}
+
+/* ==========================================
+   12. ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
