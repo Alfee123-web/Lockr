@@ -1,0 +1,122 @@
+/* Mobile fixes for the add / edit login form */
+@media (max-width: 640px) {
+  .vault-dashboard {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* One outer card only */
+  .vault-form-panel {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .vault-form-panel,
+  .vault-form-panel * {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  /* Flatten nested containers so controls get full width */
+  .vault-form-panel .add-entry-panel,
+  .vault-form-panel .entry-form,
+  .vault-form-panel .generator-section,
+  .vault-form-panel .gen-result {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .vault-form-panel .generator-section {
+    margin-bottom: 16px;
+  }
+
+  /* Hide repeated headings */
+  .vault-form-panel .add-entry-heading,
+  .vault-form-panel .generator-section > .generator-heading {
+    display: none;
+  }
+
+  /* Comfortable inputs (16px prevents iOS zoom on focus) */
+  .vault-form-panel .form-field {
+    margin-bottom: 14px;
+  }
+
+  .vault-form-panel .form-field input,
+  .vault-form-panel .form-field select,
+  .vault-form-panel .category-trigger {
+    width: 100%;
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .vault-form-panel .category-options {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  /* Generator card */
+  .vault-form-panel .generator {
+    width: 100%;
+    margin: 0;
+    padding: 14px;
+  }
+
+  .vault-form-panel .generator textarea,
+  .vault-form-panel .generator-textarea {
+    width: 100%;
+    min-height: 110px;
+    font-size: 16px;
+  }
+
+  /* Requirements list: compact 2-column grid */
+  .vault-form-panel .generator-summary ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 8px 0 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .vault-form-panel .generator-summary li {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .vault-form-panel .generated-password code,
+  .vault-form-panel .gen-password-preview code {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    font-size: 15px;
+  }
+
+  .vault-form-panel input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    flex-shrink: 0;
+  }
+
+  .vault-form-panel .generator-actions-row,
+  .vault-form-panel .generator-result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .vault-form-panel .generator-button,
+  .vault-form-panel .generator-generate,
+  .vault-form-panel .generator-use-button,
+  .vault-form-panel .generator-use,
+  .vault-form-panel .generator-regenerate,
+  .vault-form-panel .save-entry-button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
