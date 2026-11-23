@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "../api";
 import EntryForm from "../components/EntryForm";
 import EntryCard from "../components/EntryCard";
+import Logo from "../components/Logo";
 import Mascot from "../components/Mascot";
 
 export default function Vault() {
   const [entries, setEntries] = useState([]);
   const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [refresh, setRefresh] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -53,6 +55,37 @@ export default function Vault() {
     };
   }, [query, refresh]);
 
+  const categories = useMemo(() => {
+    const counts = entries.reduce((acc, entry) => {
+      const cat = entry.category || "Other";
+      acc[cat] = (acc[cat] || 0) + 1;
+      return acc;
+    }, {});
+
+    return [
+      { name: "All", count: entries.length },
+      ...Object.keys(counts)
+        .sort()
+        .map((name) => ({ name, count: counts[name] })),
+    ];
+  }, [entries]);
+
+  useEffect(() => {
+    if (
+      selectedCategory !== "All" &&
+      !categories.some((c) => c.name === selectedCategory)
+    ) {
+      setSelectedCategory("All");
+    }
+  }, [categories, selectedCategory]);
+
+  const visibleEntries = useMemo(() => {
+    if (selectedCategory === "All") return entries;
+    return entries.filter(
+      (entry) => (entry.category || "Other") === selectedCategory
+    );
+  }, [entries, selectedCategory]);
+
   const logout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -95,7 +128,7 @@ export default function Vault() {
       {/* Top navigation */}
       <header className="vault-navbar">
         <div className="vault-brand">
-          <div className="vault-brand-icon">🎀</div>
+          <Logo size={46} />
           <div>
             <h1>Lockr</h1>
             <span>One place for all your keys.</span>
@@ -132,7 +165,7 @@ export default function Vault() {
         <div className="welcome-treasure">
           <div className="treasure-sparkle sparkle-left">✦</div>
           <div className="treasure-sparkle sparkle-right">✧</div>
-   <Mascot size={150} />
+          <Mascot size={150} />
           <span>Your secrets are safe here!</span>
         </div>
       </section>
@@ -239,6 +272,29 @@ export default function Vault() {
           )}
         </div>
 
+        {/* Category Filter Pills */}
+        {!loading && !error && entries.length > 0 && (
+          <div
+            className="vault-category-bar"
+            role="tablist"
+            aria-label="Filter logins by category"
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.name}
+                type="button"
+                className={`vault-cat-pill ${
+                  selectedCategory === cat.name ? "active" : ""
+                }`}
+                onClick={() => setSelectedCategory(cat.name)}
+              >
+                <span>{cat.name}</span>
+                <span className="vault-cat-count">{cat.count}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Entry list */}
         <div className="vault-entry-list">
           {loading ? (
@@ -256,19 +312,21 @@ export default function Vault() {
                 Try again
               </button>
             </div>
-          ) : entries.length === 0 ? (
+          ) : visibleEntries.length === 0 ? (
             <div className="vault-empty-state">
               <div className="empty-icon">🧰</div>
               <h3>
-                {query ? "No treasures found!" : "Your vault is waiting!"}
+                {query || selectedCategory !== "All"
+                  ? "No treasures found!"
+                  : "Your vault is waiting!"}
               </h3>
               <p>
-                {query
-                  ? "Try another search term."
+                {query || selectedCategory !== "All"
+                  ? "Try clearing your search or switching categories."
                   : "Add your first login and keep it safe with Lockr."}
               </p>
 
-              {!query && (
+              {!query && selectedCategory === "All" && (
                 <button
                   type="button"
                   onClick={() => {
@@ -283,12 +341,13 @@ export default function Vault() {
           ) : (
             <>
               <div className="entry-count">
-                Showing {entries.length}{" "}
-                {entries.length === 1 ? "login" : "logins"}
+                Showing {visibleEntries.length}{" "}
+                {visibleEntries.length === 1 ? "login" : "logins"}
+                {selectedCategory !== "All" ? ` in ${selectedCategory}` : ""}
               </div>
 
               <div className="vault-entry-grid">
-                {entries.map((entry) => (
+                {visibleEntries.map((entry) => (
                   <EntryCard
                     key={entry._id}
                     entry={entry}

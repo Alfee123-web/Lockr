@@ -1,10 +1,13 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api";
+import Logo from "../components/Logo";
 
 export default function Login() {
-  const [isSignup, setIsSignup] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [isSignup, setIsSignup] = useState(
+    searchParams.get("mode") === "signup"
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +15,11 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsSignup(searchParams.get("mode") === "signup");
+    setError("");
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +44,7 @@ export default function Login() {
       }
 
       localStorage.setItem("token", data.token);
-      navigate("/");
+      navigate("/vault");
     } catch (err) {
       setError(
         err.response?.data?.msg ||
@@ -72,7 +80,10 @@ export default function Login() {
             </p>
           </div>
 
-          <div className="treasure-scene" aria-label="Decorative treasure chest">
+          <div
+            className="treasure-scene"
+            aria-label="Decorative treasure chest"
+          >
             <span className="chest-floating floating-heart heart-one">♡</span>
             <span className="chest-floating floating-heart heart-two">♥</span>
             <span className="chest-floating floating-star star-one">✦</span>
@@ -97,14 +108,18 @@ export default function Login() {
           </div>
 
           <div className="treasure-footer-note">
-            Made with love, secured with care 🎀
+            <Link to="/" className="landing-back-link">
+              ← Back to Lockr overview
+            </Link>
           </div>
         </div>
 
         {/* RIGHT: Login / Signup card */}
         <div className="auth-box auth-login-card">
           <div className="auth-brand">
-            <div className="auth-brand-bow">🎀</div>
+            <div className="auth-brand-logo">
+              <Logo size={64} />
+            </div>
             <h2>Lockr</h2>
             <p>One place for all your keys.</p>
           </div>
@@ -178,6 +193,14 @@ export default function Login() {
                   : "Unlock my vault ♡"}
             </button>
           </form>
+
+          {!isSignup && (
+            <div className="auth-forgot-footer">
+              <Link to="/reset-password" className="forgot-password-link">
+                Forgot your password?
+              </Link>
+            </div>
+          )}
 
           <div className="auth-switch">
             <span>

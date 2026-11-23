@@ -4,19 +4,20 @@ import api from "../api";
 export default function EntryCard({ entry, onDeleted, onEdit }) {
   const [password, setPassword] = useState("");
   const [copied, setCopied] = useState(false);
+  const [clearSeconds, setClearSeconds] = useState(0);
   const [usernameCopied, setUsernameCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const revealTimer = useRef(null);
   const copiedTimer = useRef(null);
-  const clipboardTimer = useRef(null);
+  const clipboardInterval = useRef(null);
   const usernameTimer = useRef(null);
 
   useEffect(() => {
     return () => {
       clearTimeout(revealTimer.current);
       clearTimeout(copiedTimer.current);
-      clearTimeout(clipboardTimer.current);
+      clearInterval(clipboardInterval.current);
       clearTimeout(usernameTimer.current);
     };
   }, []);
@@ -47,30 +48,38 @@ export default function EntryCard({ entry, onDeleted, onEdit }) {
     }
   };
 
-  // Copy password and attempt clipboard clearing after 15 seconds
+  // Copy password with live 15-second clipboard countdown
   const copy = async () => {
     try {
       const pw = await getPassword();
       await navigator.clipboard.writeText(pw);
 
       setCopied(true);
+      setClearSeconds(15);
 
       clearTimeout(copiedTimer.current);
       copiedTimer.current = setTimeout(() => {
         setCopied(false);
       }, 2000);
 
-      clearTimeout(clipboardTimer.current);
-      clipboardTimer.current = setTimeout(async () => {
-        try {
-          const current = await navigator.clipboard.readText();
-          if (current === pw) {
-            await navigator.clipboard.writeText("");
+      clearInterval(clipboardInterval.current);
+      clipboardInterval.current = setInterval(async () => {
+        setClearSeconds((prev) => {
+          if (prev <= 1) {
+            clearInterval(clipboardInterval.current);
+            navigator.clipboard
+              .readText()
+              .then((current) => {
+                if (current === pw) {
+                  return navigator.clipboard.writeText("");
+                }
+              })
+              .catch(() => {});
+            return 0;
           }
-        } catch (err) {
-          console.error("Clipboard could not be cleared:", err);
-        }
-      }, 15000);
+          return prev - 1;
+        });
+      }, 1000);
     } catch (err) {
       console.error("Could not copy password:", err);
     }
@@ -115,7 +124,12 @@ export default function EntryCard({ entry, onDeleted, onEdit }) {
         </div>
 
         <div className="entry-title">
-          <h3>{entry.siteName}</h3>
+          <div className="entry-title-row">
+            <h3>{entry.siteName}</h3>
+            {entry.category && (
+              <span className="entry-category-chip">{entry.category}</span>
+            )}
+          </div>
           <a
             href={entry.url}
             target="_blank"
@@ -211,6 +225,12 @@ export default function EntryCard({ entry, onDeleted, onEdit }) {
       {password && (
         <p className="entry-security-note">
           ♡ Password will hide automatically in 10 seconds
+        </p>
+      )}
+
+      {clearSeconds > 0 && (
+        <p className="entry-security-note clipboard-countdown">
+          ⏳ Clipboard clears automatically in {clearSeconds}s
         </p>
       )}
     </article>
