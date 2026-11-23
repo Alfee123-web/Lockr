@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import EntryForm from "../components/EntryForm";
 import EntryCard from "../components/EntryCard";
-import HelloKitty from "../components/HelloKitty";
+import Mascot from "../components/Mascot";
 
 export default function Vault() {
   const [entries, setEntries] = useState([]);
@@ -132,7 +132,7 @@ export default function Vault() {
         <div className="welcome-treasure">
           <div className="treasure-sparkle sparkle-left">✦</div>
           <div className="treasure-sparkle sparkle-right">✧</div>
-          <HelloKitty className="kitty-mascot" />
+   <Mascot size={150} />
           <span>Your secrets are safe here!</span>
         </div>
       </section>
